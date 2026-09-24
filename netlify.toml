@@ -1,0 +1,27 @@
+# Netlify — English Test landing (web-site)
+# GitHub repo ildizidan deploy: publish = web-site, build yo'q (sof statik).
+[build]
+  publish = "web-site"
+  command = ""
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA fallback YO'Q — privacy.html alohida sahifa sifatida ishlashi shart.
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
