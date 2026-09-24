@@ -1,0 +1,19 @@
+name = "english-test-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Deploy: npx wrangler deploy
+# KV + R2 ni avval yarating (worker/README-BACKEND.md ga qarang),
+# keyin pastdagi id larni to'ldiring.
+
+[[kv_namespaces]]
+binding = "WORDS_KV"
+id = "e4989365ea77418f96a648d4baf184b8"
+
+# R2 yoqilgan ✅
+[[r2_buckets]]
+binding = "IMAGES_BUCKET"
+bucket_name = "english-test-images"
+
+# [vars]
+# ALLOWED_ORIGIN = "*"

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rasm Boshqarish — 429 so'z</title>
+<meta name="description" content="English Test ilovasi uchun 429 ta so'zga rasm qo'shish/o'chirish paneli">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div>
+      <h1>🖼️ Rasm Boshqarish</h1>
+      <p class="subtitle">English Test • 429 ta so'z • 800×600 px • JPG/PNG</p>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-text"><span id="doneCount">0</span>/<span id="totalCount">429</span> tayyor</div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+  </div>
+  <div class="toolbar">
+    <input id="search" type="search" placeholder="🔍 Qidirish: apple, olma...">
+    <select id="catFilter"><option value="">Barcha bo'limlar</option></select>
+    <select id="statusFilter">
+      <option value="all">Hammasi</option>
+      <option value="with">✅ Rasmi bor</option>
+      <option value="without">❌ Rasmi yo'q</option>
+    </select>
+  </div>
+  <div class="actions">
+    <button id="btnAddWord" class="primary" title="Yangi so'z qo'shish">＋ So'z qo'shish</button>
+    <button id="btnExportDart" title="Flutter uchun picture_words.dart generatsiya">⬇️ picture_words.dart</button>
+    <button id="btnExportJson" title="So'z → fayl xaritasini JSON ko'rinishida yuklash">⬇️ manifest.json</button>
+    <button id="btnMissing" title="Rasmi yo'q so'zlar ro'yxati">📋 Yetishmaydiganlar</button>
+    <button id="btnClear" class="danger" title="Brauzerdagi barcha yuklangan rasmlarni o'chirish">🗑 Tozalash</button>
+  </div>
+  <div class="actions" id="cloudBar" style="margin-top:8px; border-top:1px dashed #ccc; padding-top:8px;">
+    <span style="font-weight:700;">☁️ Cloud:</span>
+    <input id="cloudToken" type="password" placeholder="Admin token" style="max-width:160px;" title="Worker ADMIN_TOKEN">
+    <button id="btnCloudDown" title="Cloudflare dagi so'zlarni yuklash">⬇ Yuklash</button>
+    <button id="btnCloudUp" class="primary" title="Hozirgi ro'yxatni Cloudflare ga saqlash — Android yangilanadi">⬆ Saqlash 📱</button>
+    <span id="cloudStatus" style="font-size:12px; color:#666;">...</span>
+  </div>
+</header>
+
+<main>
+  <div id="hint" class="hint">
+    💡 Kartochkadagi <b>+ Rasm</b> — rasm qo'shish, <b>✏️</b> — so'zni tahrirlash, <b>🗑</b> — rasmni o'chirish.
+    Yangi so'z uchun <b>＋ So'z qo'shish</b> ni bosing. Rasm avtomatik <b>800×600</b> ga keltiriladi va brauzerda saqlanadi.
+    Tugagach <b>⬇️ picture_words.dart</b> ni bosing va fayllarni ilovaga ko'chiring (yo'riqnoma pastda).
+  </div>
+  <div id="grid" class="grid"></div>
+  <div id="empty" class="empty" hidden>Hech narsa topilmadi 🔍</div>
+</main>
+
+<section class="guide">
+  <h2>📦 Flutter ilovaga ko'chirish</h2>
+  <ol>
+    <li>Har bir rasm kartochkasidagi <b>⬇</b> tugma bilan faylni <code>assets/picture_quiz/</code> papkasiga saqlang (nomi avtomatik to'g'ri bo'ladi).</li>
+    <li><b>⬇️ picture_words.dart</b> tugma bilan olingan faylni <code>lib/data/picture_words.dart</code> o'rniga qo'ying.</li>
+    <li><code>flutter run</code> — Rasmli test ishlaydi ✅</li>
+  </ol>
+  <h2>☁️ Cloudflare Pages ga yuklash</h2>
+  <ol>
+    <li><code>picture-admin/images/</code> papkasiga tayyor rasmlarni soling (masalan <code>apple.png</code>).</li>
+    <li>Terminalda <code>node tools/gen-images-list.js</code> ni ishga tushiring (sayt 404 xatosiz ishlashi uchun).</li>
+    <li>Cloudflare Dashboard → Workers &amp; Pages → Create → Pages → Upload assets → <code>picture-admin</code> papkani yuklang.</li>
+    <li>Yoki terminalda: <code>npx wrangler pages deploy picture-admin --project-name=rasm-boshqarish</code></li>
+  </ol>
+</section>
+
+<div id="modal" class="modal" hidden>
+  <span id="modalClose" class="modal-close">✕</span>
+  <img id="modalImg" alt="Katta rasm" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+  <div id="modalCap" class="modal-cap"></div>
+</div>
+
+<div id="wmodal" class="wmodal" hidden>
+  <div class="wsheet">
+    <h3 id="wTitle">＋ So'z qo'shish</h3>
+    <label>Inglizcha<input id="fEn" maxlength="60" placeholder="Masalan: lion"></label>
+    <label>O'zbekcha<input id="fUz" maxlength="60" placeholder="Masalan: sher"></label>
+    <label>Bo'lim<input id="fCat" list="catList" maxlength="30" placeholder="Masalan: Hayvon"><datalist id="catList"></datalist></label>
+    <label>Rasm (ixtiyoriy)<input id="fImg" type="file" accept="image/*"></label>
+    <div class="wbtns">
+      <button id="wSave">Saqlash ✅</button>
+      <button id="wCancel">Bekor qilish</button>
+      <button id="wDelete" class="danger" hidden>So'zni o'chirish 🗑</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="words.js"></script>
+<script src="images-list.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+<script src="api-sync.js"></script>
+</body>
+</html>
